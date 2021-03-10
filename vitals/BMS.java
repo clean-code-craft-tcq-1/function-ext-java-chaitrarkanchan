@@ -18,7 +18,7 @@ public class BMS {
         assert(batteryIsOk(-1, -20, 0.7f)==false);
     	assert(batteryIsOk(44, 79, 0.7f)==true);
     	assert(state_estimator.setTemperatureunit("Fahrenheit")==true);
-    	assert(batteryIsOk(140, 60, 0.6f) == true);
+    	assert(batteryIsOk(140, 60, 0.6f) == false);
     	
     }
 }
