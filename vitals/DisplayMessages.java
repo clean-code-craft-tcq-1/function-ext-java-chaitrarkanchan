@@ -10,18 +10,18 @@ public class DisplayMessages {
 	
 	public static void PrintLowBreachMessage(String Measure)
     {
-		String Message = (language == "DE") ? "Die "+ Measure +" läuft in Richtung ihrer unteren Bruchgrenze" : Measure + " is near low breach limit";
+		String Message = (language == "DE") ? "Die "+ Measure +" lauft in Richtung ihrer unteren Bruchgrenze" : Measure + " is near low breach limit";
        PrintMessage(Message);
     }
     public static void PrintHighBreachMessage(String Measure)
     {
-    	String Message = (language == "DE") ? "Die " + Measure + " läuft in Richtung ihrer oberen Bruchgrenze" : Measure + " is near high breach limit";
+    	String Message = (language == "DE") ? "Die " + Measure + " lauft in Richtung ihrer oberen Bruchgrenze" : Measure + " is near high breach limit";
         PrintMessage(Message);
     }
 
     public static void PrintMaximumLimitMessage(String Measure, float MaximumLimit)
     {
-    	String Message = (language == "DE") ? "Die " + Measure + " hat seine Höchstgrenze von " + MaximumLimit + " überschritten" : Measure + " is more than its Maximum Limit of " + MaximumLimit;
+    	String Message = (language == "DE") ? "Die " + Measure + " hat seine Hochstgrenze von " + MaximumLimit + " uberschritten" : Measure + " is more than its Maximum Limit of " + MaximumLimit;
         PrintMessage(Message);
     }
 
