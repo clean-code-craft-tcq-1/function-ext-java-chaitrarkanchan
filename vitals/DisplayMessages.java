@@ -8,39 +8,52 @@ public class DisplayMessages {
 	public static String language;
 	static List<String> lang_types = Arrays.asList("EN", "DE");
 	
-	public static void PrintLowBreachMessage(String Measure)
-    {
-		String Message = (language == "DE") ? "Die "+ Measure +" lauft in Richtung ihrer unteren Bruchgrenze" : Measure + " is near low breach limit";
-       PrintMessage(Message);
-    }
-    public static void PrintHighBreachMessage(String Measure)
-    {
-    	String Message = (language == "DE") ? "Die " + Measure + " lauft in Richtung ihrer oberen Bruchgrenze" : Measure + " is near high breach limit";
-        PrintMessage(Message);
-    }
 
-    public static void PrintMaximumLimitMessage(String Measure, float MaximumLimit)
+    public static void showMsg(String msg)
     {
-    	String Message = (language == "DE") ? "Die " + Measure + " hat seine Hochstgrenze von " + MaximumLimit + " uberschritten" : Measure + " is more than its Maximum Limit of " + MaximumLimit;
-        PrintMessage(Message);
-    }
-
-    public static void PrintMinimumLimitMessage(String Measure, float MinimumLimit)
-    {
-    	String Message = (language == "DE") ? "Die " + Measure + " ist unter seine Mindestgrenze von " + MinimumLimit + " gefallen" : Measure + " is less than its Minimum Limit of " + MinimumLimit;
-        PrintMessage(Message);
-    }
-
-    public static void PrintMessage(String Message)
-    {
-      System.out.println(Message);
+      System.out.println(msg);
     }
     
+    public static void displayMaximumAlert(String vitalparam, float MaximumLimit)
+    {
+    	String alert = (language == "EN")? vitalparam + " is more than its Maximum Limit-" + MaximumLimit:"Die " + vitalparam + "ist hoher als die maximale Grenze" + MaximumLimit;
+    	showMsg(alert);
+    }
+
+    public static void displayMinimumAlert(String vitalparam, float MinimumLimit)
+    {
+    	String alert = (language == "EN") ? vitalparam + " is less than its Minimum Limit-" + MinimumLimit:"Die " + vitalparam + " liegt unter der Hochstgrenze " + MinimumLimit;
+    	showMsg(alert);
+    	
+    }
+    
+	public static boolean displayLowBreachWarning(String vitalparam)
+    {
+		String warning = (language == "EN") ?  vitalparam + " is reaching towards low breach limit":"Die "+ vitalparam +" erreicht ein niedriges Verstoßlimit";
+		showMsg(warning);
+		return true;
+    }
+    public static boolean displayHighBreachWarning(String vitalparam)
+    {
+    	String warning = (language == "EN") ?  vitalparam + " is reaching towards high breach limit":"Die " + vitalparam + " erreicht ein niedriges Verstoßlimit" ;
+    	showMsg(warning);
+    	return true;
+    }
+   
 	public static boolean set_system_language(String lan) {
 		if(lang_types.contains(lan)){
 	    	language=lan;
 	        return true;
 	    }
 		return false;
+	}
+
+
+	public static void printBreachWarningMsg(Boolean breachStatus,String val,String parameter) {
+		
+		if(breachStatus){
+			breachStatus=(val=="LOW")? displayLowBreachWarning(parameter):displayHighBreachWarning(parameter);
+		}
+		
 	}
 }
