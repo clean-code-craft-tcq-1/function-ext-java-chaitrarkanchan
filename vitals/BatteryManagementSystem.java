@@ -1,18 +1,14 @@
 package vitals;
 
-public class BMS {
+public class BatteryManagementSystem {
 	static boolean batteryIsOk(float temperature, float soc, float chargeRate) {       
-        StateEstimator state_estimator = new StateEstimator(new BatteryMeasures(temperature, soc, chargeRate));
-		if(state_estimator.isBatteryOk()){
-			DisplayMessages.PrintMessage("All Param Ok!");
-			return true;
-		}
-			return false;
+        BatteryFactorsStateEstimator state_estimator = new BatteryFactorsStateEstimator(temperature, soc, chargeRate);
+		return state_estimator.isBatteryOk();
     }
 	
     public static void main(String[] args) {
     	
-    	StateEstimator state_estimator=new StateEstimator();
+    	BatteryFactorsStateEstimator state_estimator=new BatteryFactorsStateEstimator();
     	assert(DisplayMessages.set_system_language("EN")==true);
     	assert(batteryIsOk(25, 70, 0.7f) == true);
         assert(batteryIsOk(-1, -20, 0.7f)==false);
