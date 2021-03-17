@@ -3,7 +3,9 @@ package vitals;
 public class BatteryManagementSystem {
 	static boolean batteryIsOk(float temperature, float soc, float chargeRate) {       
         BatteryFactorsStateEstimator state_estimator = new BatteryFactorsStateEstimator(temperature, soc, chargeRate);
-		return state_estimator.isBatteryOk();
+		boolean overallstatus=state_estimator.isBatteryOk();
+		ReportLogger.getReport();
+		return overallstatus;
     }
 	
     public static void main(String[] args) {
