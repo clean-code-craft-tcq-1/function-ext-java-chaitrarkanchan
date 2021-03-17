@@ -7,6 +7,9 @@ public class ReportLogger {
 	static final String AllParamOkDU = "Alle wichtigen Parameter liegen im Bereich. Insgesamt ist der Batteriezustand gut!";
 	static final String StartUpMsgEN="Generating Over All  Battery Report \n";
 	static final String StartUpMsgDU="Generieren uber alle Batterieberichte \n";
+	ReportLogger(){
+		
+	}
 	
 	public void getReport() {
 		StringBuilder sb=new StringBuilder();  
