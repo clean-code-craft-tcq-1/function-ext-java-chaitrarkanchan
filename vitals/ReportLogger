@@ -1,0 +1,94 @@
+package vitals;
+
+import java.util.Map;
+
+public class ReportLogger {
+	static final String AllParamOkEN = "All the vital parameters are within Range.Overall Battery Health is Good!";
+	static final String AllParamOkDU = "Alle wichtigen Parameter liegen im Bereich. Insgesamt ist der Batteriezustand gut!";
+	static final String StartUpMsgEN="Generating Over All  Battery Report \n";
+	static final String StartUpMsgDU="Generieren uber alle Batterieberichte \n";
+	
+	public static void getReport() {
+		StringBuilder sb=new StringBuilder();  
+		
+		if(BatteryFactorAccumulator.VitalFactorExceedMaxLimit.isEmpty()&&BatteryFactorAccumulator.VitalFactorExceedMinLimit.isEmpty()&&BatteryFactorAccumulator.VitalFactorReachHighBreach.isEmpty()&&BatteryFactorAccumulator.VitalFactorReachLowBreach.isEmpty()){
+			if(BatteryFactorAccumulator.language=="EN"){
+				sb.append(StartUpMsgEN);
+				sb.append(AllParamOkEN);
+			}
+			if(BatteryFactorAccumulator.language=="DE"){
+				sb.append(StartUpMsgDU);
+				sb.append(AllParamOkDU);
+			}
+		}
+		else{
+			if(BatteryFactorAccumulator.language=="EN"){
+				sb.append(StartUpMsgEN);
+				sb.append("One Or more Vital Factors violating the limit...Please take necessary actions!\n");
+			}
+			if(BatteryFactorAccumulator.language=="DE"){
+				sb.append(StartUpMsgDU);
+				sb.append("Ein oder mehrere wichtige Faktoren, die das Limit uberschreiten ... Bitte ergreifen Sie die erforderlichen Maßnahmen!\n");
+			}
+			
+			getALertMaxParameters(sb,BatteryFactorAccumulator.VitalFactorExceedMaxLimit);
+			getAlertMinParameters(sb,BatteryFactorAccumulator.VitalFactorExceedMinLimit);
+			getParamHighBreachWarning(sb,BatteryFactorAccumulator.VitalFactorReachHighBreach);
+			getParamLowBreachWarning(sb,BatteryFactorAccumulator.VitalFactorReachLowBreach);
+		}
+		BatteryFactorAccumulator.VitalFactorExceedMaxLimit.clear();
+		BatteryFactorAccumulator.VitalFactorExceedMinLimit.clear();
+		BatteryFactorAccumulator.VitalFactorReachHighBreach.clear();
+		BatteryFactorAccumulator.VitalFactorReachLowBreach.clear();
+		System.out.println(sb.toString());
+	}
+
+	
+
+	private static void getParamLowBreachWarning(StringBuilder sb,Map<String, Float> vitalFactorReachLowBreach) {
+		if(BatteryFactorAccumulator.language=="EN" && !vitalFactorReachLowBreach.isEmpty() ){
+			sb.append("Vitals Factors reaching Low brech limit are:\n");
+			sb.append(vitalFactorReachLowBreach.toString());
+		}
+		if(BatteryFactorAccumulator.language=="DE" && !vitalFactorReachLowBreach.isEmpty() ){
+			sb.append("Vitale Faktoren, die die untere Grenze erreichen, sind:\n");
+			sb.append(vitalFactorReachLowBreach.toString());
+		}
+	}
+
+	private static void getParamHighBreachWarning(StringBuilder sb,Map<String, Float> vitalFactorReachHighBreach) {
+		if(BatteryFactorAccumulator.language=="EN" && !vitalFactorReachHighBreach.isEmpty() ){
+			sb.append("Vitals Factors reaching High brech limit are:\n");
+			sb.append(vitalFactorReachHighBreach.toString());
+		}
+		if(BatteryFactorAccumulator.language=="DE" && !vitalFactorReachHighBreach.isEmpty() ){
+			sb.append("Vitale Faktoren, die die Obergrenze erreichen, sind:\n");
+			sb.append(vitalFactorReachHighBreach.toString());
+		}
+	}
+
+	private static void getAlertMinParameters(StringBuilder sb, Map<String, Float> vitalFactorExceedMinLimit) {
+		if(BatteryFactorAccumulator.language=="EN" && !vitalFactorExceedMinLimit.isEmpty() ){
+			sb.append("Vitals Factors exceeding minimum limit are:\n");
+			sb.append(vitalFactorExceedMinLimit.toString());
+		}
+		if(BatteryFactorAccumulator.language=="DE" && !vitalFactorExceedMinLimit.isEmpty() ){
+			sb.append("Vitale Faktoren, die die Mindestgrenze uberschreiten, sind:\n");
+			sb.append(vitalFactorExceedMinLimit.toString());
+		}
+	}
+
+	private static void getALertMaxParameters(StringBuilder sb, Map<String, Float> vitalFactorExceedMaxLimit) {
+		// TODO Auto-generated method stub
+		if(BatteryFactorAccumulator.language=="EN" && !vitalFactorExceedMaxLimit.isEmpty()){
+			sb.append("Vitals Factors limit-->Factor=[Min,Max]:"+BatteryFactorsStateEstimator.dataMap.toString()+"\n");
+			sb.append("Vitals Factors exceeding maximum limit are:\n");
+			sb.append(vitalFactorExceedMaxLimit.toString());
+		}
+		if(BatteryFactorAccumulator.language=="DE" && !vitalFactorExceedMaxLimit.isEmpty() ){
+			sb.append("Vitale Faktoren limit-->Faktoren=[Min,Max]:"+BatteryFactorsStateEstimator.dataMap.toString()+"\n");
+			sb.append("Vitale Faktoren, die die Hochstgrenze uberschreiten, sind:\n");
+			sb.append(vitalFactorExceedMaxLimit.toString());
+		}
+	}
+}
