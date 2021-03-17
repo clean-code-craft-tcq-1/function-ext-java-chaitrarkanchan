@@ -4,7 +4,7 @@ public class BatteryManagementSystem {
 	static boolean batteryIsOk(float temperature, float soc, float chargeRate) {       
         BatteryFactorsStateEstimator state_estimator = new BatteryFactorsStateEstimator(temperature, soc, chargeRate);
 		boolean overallstatus=state_estimator.isBatteryOk();
-		ReportLogger.getReport();
+		ReportGenerator.getReport();
 		return overallstatus;
     }
 	
