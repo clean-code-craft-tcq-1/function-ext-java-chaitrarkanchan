@@ -2,16 +2,14 @@ package vitals;
 
 import java.util.Map;
 
-public class ReportLogger {
-	static final String AllParamOkEN = "All the vital parameters are within Range.Overall Battery Health is Good!";
-	static final String AllParamOkDU = "Alle wichtigen Parameter liegen im Bereich. Insgesamt ist der Batteriezustand gut!";
-	static final String StartUpMsgEN="Generating Over All  Battery Report \n";
-	static final String StartUpMsgDU="Generieren uber alle Batterieberichte \n";
-	ReportLogger(){
-		
-	}
+public class ReportGenerator {
 	
-	public void getReport() {
+	static String AllParamOkEN = "All the vital parameters are within Range.Overall Battery Health is Good!";
+	static String AllParamOkDU = "Alle wichtigen Parameter liegen im Bereich. Insgesamt ist der Batteriezustand gut!";
+	static String StartUpMsgEN="Generating Over All  Battery Report \n";
+	static String StartUpMsgDU="Generieren uber alle Batterieberichte \n";
+	
+	public static void getReport() {
 		StringBuilder sb=new StringBuilder();  
 		
 		if(BatteryFactorAccumulator.VitalFactorExceedMaxLimit.isEmpty()&&BatteryFactorAccumulator.VitalFactorExceedMinLimit.isEmpty()&&BatteryFactorAccumulator.VitalFactorReachHighBreach.isEmpty()&&BatteryFactorAccumulator.VitalFactorReachLowBreach.isEmpty()){
