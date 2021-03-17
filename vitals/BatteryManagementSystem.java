@@ -9,7 +9,7 @@ public class BatteryManagementSystem {
     public static void main(String[] args) {
     	
     	BatteryFactorsStateEstimator state_estimator=new BatteryFactorsStateEstimator();
-    	assert(DisplayMessages.set_system_language("EN")==true);
+    	assert(BatteryFactorAccumulator.set_system_language("EN")==true);
     	assert(batteryIsOk(25, 70, 0.7f) == true);
         assert(batteryIsOk(-1, -20, 0.7f)==false);
     	assert(batteryIsOk(44, 79, 0.7f)==true);
