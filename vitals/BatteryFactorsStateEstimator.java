@@ -15,7 +15,7 @@ public class BatteryFactorsStateEstimator {
 	static List<Float> Soc_Limit = Arrays.asList(20f,80f);
 	static List<Float> ChargeRate_Limit = Arrays.asList(0f,0.8f);
 	static Map<String, List<Float>> dataMap = new HashMap<String, List<Float>>();
-	ReportLogger rl=new ReportLogger();
+	
 	 
     public BatteryFactorsStateEstimator(float temperature, float soc, float chargeRate)
     {
@@ -35,7 +35,6 @@ public class BatteryFactorsStateEstimator {
 		boolean status_of_temp=isTemperatureWithinRange(this.Temperature);//to evaluate each parameter status and display warning & alert message
 		boolean status_of_soc=isSocWithinRange(this.StateOfCharge);
 		boolean status_of_charge=isChargeWithinRange(this.ChargeRate);
-		rl.getReport();
 		return ((status_of_temp && status_of_soc) && status_of_charge);
 	}
 	
