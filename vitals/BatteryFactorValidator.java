@@ -1,21 +1,13 @@
 package vitals;
-
 public class BatteryFactorValidator {
   
 	public static boolean EvaluateBatteryMaxMeasure(String ParamName,float ParamValue,float MaxParamLimit) {
-		if(ParamValue>MaxParamLimit){
-			DisplayMessages.displayMaximumAlert(ParamName,MaxParamLimit);
-			return false;
-		}
-        return true;
+		
+        return ParamValue>MaxParamLimit;
 	}
 	
 	public static boolean EvaluateBatteryMinMeasure(String ParamName,float ParamValue,float MinParamLimit) {
-	if (ParamValue < MinParamLimit){
-    	DisplayMessages.displayMinimumAlert(ParamName,MinParamLimit);
-    	return false;
-    }
-	return true;
+		return ParamValue < MinParamLimit;
 	}
 	
 	
@@ -30,5 +22,3 @@ public class BatteryFactorValidator {
          
         
     }
-
-}
