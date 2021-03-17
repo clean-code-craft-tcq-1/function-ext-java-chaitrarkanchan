@@ -9,7 +9,7 @@ public class ReportGenerator {
 	static String StartUpMsgEN="Generating Over All  Battery Report \n";
 	static String StartUpMsgDU="Generieren uber alle Batterieberichte \n";
 	
-	public static void getReport() {
+	public static void getBatteryReport() {
 		StringBuilder sb=new StringBuilder();  
 		
 		if(BatteryFactorAccumulator.VitalFactorExceedMaxLimit.isEmpty()&&BatteryFactorAccumulator.VitalFactorExceedMinLimit.isEmpty()&&BatteryFactorAccumulator.VitalFactorReachHighBreach.isEmpty()&&BatteryFactorAccumulator.VitalFactorReachLowBreach.isEmpty()){
