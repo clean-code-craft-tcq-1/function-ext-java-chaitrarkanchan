@@ -67,13 +67,17 @@ public class BatteryFactorAccumulator {
 		
 	}
 
-	public static boolean printAlertMsg(boolean parammeasure,String status, String parameter,float val) {
+	public static boolean printAlertHighMsg(boolean parammeasure,String status, String parameter,float val) {
 		if(parammeasure==true && status=="High" ){
 		VitalFactorExceedMaxLimit.put(parameter,val);
 			displayMaximumAlert(parameter);
 			return false;
 		}
-		else if(parammeasure==true && status=="Low" ){
+		
+		return true;
+	}
+	public static boolean printAlertLowMsg(boolean parammeasure,String status, String parameter,float val) {
+		if(parammeasure==true && status=="Low" ){
 		VitalFactorExceedMinLimit.put(parameter,val);
 			displayMinimumAlert(parameter);
 			return false;
@@ -81,4 +85,5 @@ public class BatteryFactorAccumulator {
 		return true;
 	}
 }
+
 
