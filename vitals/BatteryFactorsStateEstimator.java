@@ -46,8 +46,8 @@ public class BatteryFactorsStateEstimator {
 		}
 		BatteryFactorAccumulator.printBreachWarningMsg(BatteryFactorValidator.CheckLBreach("Temperature", temperature, BatteryFactorsStateEstimator.Temperature_Limit.get(0), BatteryFactorsStateEstimator.Temperature_Limit.get(1)),"Low","Temperature",temperature);
 		BatteryFactorAccumulator.printBreachWarningMsg(BatteryFactorValidator.CheckHBreach("Temperature", temperature, BatteryFactorsStateEstimator.Temperature_Limit.get(0), BatteryFactorsStateEstimator.Temperature_Limit.get(1)),"High","Temperature",temperature);
-		boolean isTempMax=BatteryFactorAccumulator.printAlertMsg(BatteryFactorValidator.EvaluateBatteryMaxMeasure("Temperature", temperature, BatteryFactorsStateEstimator.Temperature_Limit.get(1)),"High","Temperature",temperature);
-		boolean isTempMin=BatteryFactorAccumulator.printAlertMsg(BatteryFactorValidator.EvaluateBatteryMinMeasure("Temperature", temperature, BatteryFactorsStateEstimator.Temperature_Limit.get(0)),"Low","Temperature",temperature);
+		boolean isTempMax=BatteryFactorAccumulator.printAlertHighMsg(BatteryFactorValidator.EvaluateBatteryMaxMeasure("Temperature", temperature, BatteryFactorsStateEstimator.Temperature_Limit.get(1)),"High","Temperature",temperature);
+		boolean isTempMin=BatteryFactorAccumulator.printAlertLowMsg(BatteryFactorValidator.EvaluateBatteryMinMeasure("Temperature", temperature, BatteryFactorsStateEstimator.Temperature_Limit.get(0)),"Low","Temperature",temperature);
 		return (isTempMax && isTempMin);
 		
 	}
@@ -60,8 +60,8 @@ public class BatteryFactorsStateEstimator {
 	public boolean isSocWithinRange(float stateofcharge) {
 		BatteryFactorAccumulator.printBreachWarningMsg(BatteryFactorValidator.CheckLBreach("StateofCharge", stateofcharge, BatteryFactorsStateEstimator.Soc_Limit.get(0),BatteryFactorsStateEstimator.Soc_Limit.get(1)),"Low","StateofCharge",stateofcharge);
 		BatteryFactorAccumulator.printBreachWarningMsg(BatteryFactorValidator.CheckHBreach("StateofCharge", stateofcharge, BatteryFactorsStateEstimator.Soc_Limit.get(0),BatteryFactorsStateEstimator.Soc_Limit.get(1)),"High","StateofCharge",stateofcharge);
-		boolean isSocMax=BatteryFactorAccumulator.printAlertMsg(BatteryFactorValidator.EvaluateBatteryMaxMeasure("StateofCharge", stateofcharge, BatteryFactorsStateEstimator.Soc_Limit.get(1)),"High","StateofCharge",stateofcharge);
-		boolean isSocMin=BatteryFactorAccumulator.printAlertMsg(BatteryFactorValidator.EvaluateBatteryMinMeasure("StateofCharge", stateofcharge, BatteryFactorsStateEstimator.Soc_Limit.get(0)),"Low","StateofCharge",stateofcharge);
+		boolean isSocMax=BatteryFactorAccumulator.printAlertHighMsg(BatteryFactorValidator.EvaluateBatteryMaxMeasure("StateofCharge", stateofcharge, BatteryFactorsStateEstimator.Soc_Limit.get(1)),"High","StateofCharge",stateofcharge);
+		boolean isSocMin=BatteryFactorAccumulator.printAlertLowMsg(BatteryFactorValidator.EvaluateBatteryMinMeasure("StateofCharge", stateofcharge, BatteryFactorsStateEstimator.Soc_Limit.get(0)),"Low","StateofCharge",stateofcharge);
 		return (isSocMax && isSocMin);
 		
 	}
@@ -69,7 +69,7 @@ public class BatteryFactorsStateEstimator {
 	public boolean isChargeWithinRange(float chargeRate) {
 		BatteryFactorAccumulator.printBreachWarningMsg(BatteryFactorValidator.CheckLBreach("ChargeRate", chargeRate,BatteryFactorsStateEstimator.ChargeRate_Limit.get(0),BatteryFactorsStateEstimator.ChargeRate_Limit.get(1)),"Low","ChargeRate",chargeRate);
 		BatteryFactorAccumulator.printBreachWarningMsg(BatteryFactorValidator.CheckLBreach("ChargeRate", chargeRate,BatteryFactorsStateEstimator.ChargeRate_Limit.get(0),BatteryFactorsStateEstimator.ChargeRate_Limit.get(1)),"High","ChargeRate",chargeRate);
-		boolean isChargeRateMax=BatteryFactorAccumulator.printAlertMsg(BatteryFactorValidator.EvaluateBatteryMaxMeasure("ChargeRate", chargeRate, BatteryFactorsStateEstimator.ChargeRate_Limit.get(1)),"High","ChargeRate",chargeRate);
+		boolean isChargeRateMax=BatteryFactorAccumulator.printAlertHighMsg(BatteryFactorValidator.EvaluateBatteryMaxMeasure("ChargeRate", chargeRate, BatteryFactorsStateEstimator.ChargeRate_Limit.get(1)),"High","ChargeRate",chargeRate);
 		return (isChargeRateMax);
 	}
 
