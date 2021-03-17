@@ -73,7 +73,7 @@ public class BatteryFactorAccumulator {
 			displayMaximumAlert(parameter);
 			return false;
 		}
-		if(parammeasure==true && status=="Low" ){
+		else if(parammeasure==true && status=="Low" ){
 		VitalFactorExceedMinLimit.put(parameter,val);
 			displayMinimumAlert(parameter);
 			return false;
