@@ -7,7 +7,7 @@ public class ReportGenerator {
 	
 	public static  void getBatteryReport() {
 		StringBuilder sb=new StringBuilder();
-		boolean factorViolation=BatteryFactorAccumulator.VitalFactorExceedMaxLimit.isEmpty()&&BatteryFactorAccumulator.VitalFactorExceedMinLimit.isEmpty()&&BatteryFactorAccumulator.VitalFactorReachHighBreach.isEmpty()&&BatteryFactorAccumulator.VitalFactorReachLowBreach.isEmpty();
+		boolean factorViolation=CheckAlertFactors()&&CheckBrechFactors();
 		sb=(BatteryFactorAccumulator.language=="EN")?GenerateReportEN(factorViolation,sb):GenerateReportDE(factorViolation,sb);
 		BatteryFactorAccumulator.VitalFactorExceedMaxLimit.clear();
 		BatteryFactorAccumulator.VitalFactorExceedMinLimit.clear();
@@ -99,6 +99,11 @@ public class ReportGenerator {
 		sb.append("Alle wichtigen Parameter liegen innerhalb des Bereichs. Insgesamt ist der Batteriezustand gut!\n");
 		return sb;
 	}
-	
+	private static boolean CheckAlertFactors(){
+		return BatteryFactorAccumulator.VitalFactorExceedMaxLimit.isEmpty()&&BatteryFactorAccumulator.VitalFactorExceedMinLimit.isEmpty();
+	}
+	private static boolean CheckBrechFactors(){
+		return BatteryFactorAccumulator.VitalFactorReachHighBreach.isEmpty()&&BatteryFactorAccumulator.VitalFactorReachLowBreach.isEmpty();
+	}
 	
 }
