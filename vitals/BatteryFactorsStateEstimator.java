@@ -1,7 +1,9 @@
 package vitals;
 
 import java.util.Arrays;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 public class BatteryFactorsStateEstimator {
 	
@@ -9,13 +11,10 @@ public class BatteryFactorsStateEstimator {
 	public static String temperature_measure="Celsius";
 	static List<String> temperature_measure_type = Arrays.asList("Celsius", "Fahrenheit");
 	public float Temperature, StateOfCharge, ChargeRate;
-	
-	static final float MAX_TEMPERATURE = 45;
-	static final float MIN_TEMPERATURE = 0;
-	static final float MAX_SOC= 80;
-	static final float MIN_SOC= 20;
-	static final float MAX_CHARGE_RATE= 0.8f;
-	static final float MIN_CHARGE_RATE= 0.0f;
+	static List<Float> Temperature_Limit = Arrays.asList(0f,45f);
+	static List<Float> Soc_Limit = Arrays.asList(20f,80f);
+	static List<Float> ChargeRate_Limit = Arrays.asList(0f,0.8f);
+	static Map<String, List<Float>> dataMap = new HashMap<String, List<Float>>();
 	
 	 
     public BatteryFactorsStateEstimator(float temperature, float soc, float chargeRate)
@@ -27,12 +26,16 @@ public class BatteryFactorsStateEstimator {
     
 	public BatteryFactorsStateEstimator() {
 		// TODO Auto-generated constructor stub
+		dataMap.put("Temperature",Temperature_Limit);
+		dataMap.put("StateofCharge",Soc_Limit);
+		dataMap.put("ChargeRate",ChargeRate_Limit);
 	}
 
 	public boolean isBatteryOk() {
 		boolean status_of_temp=isTemperatureWithinRange(this.Temperature);//to evaluate each parameter status and display warning & alert message
 		boolean status_of_soc=isSocWithinRange(this.StateOfCharge);
 		boolean status_of_charge=isChargeWithinRange(this.ChargeRate);
+		ReportLogger.getReport();
 		return ((status_of_temp && status_of_soc) && status_of_charge);
 	}
 	
@@ -41,9 +44,11 @@ public class BatteryFactorsStateEstimator {
 		if((temperature_measure).equals(temperature_measure_type.get(1))){
 			temperature=convert_F_to_C(temperature);
 		}
-		DisplayMessages.printBreachWarningMsg(BatteryFactorValidator.CheckLBreach("Temperature", temperature, MIN_TEMPERATURE, MAX_TEMPERATURE),"Low","Temperature");
-		DisplayMessages.printBreachWarningMsg(BatteryFactorValidator.CheckHBreach("Temperature", temperature, MIN_TEMPERATURE, MAX_TEMPERATURE),"High","Temperature");
-		return (BatteryFactorValidator.EvaluateBatteryMaxMeasure("Temperature", temperature, MAX_TEMPERATURE) && BatteryFactorValidator.EvaluateBatteryMinMeasure("Temperature", temperature, MIN_TEMPERATURE));
+		BatteryFactorAccumulator.printBreachWarningMsg(BatteryFactorValidator.CheckLBreach("Temperature", temperature, BatteryFactorsStateEstimator.Temperature_Limit.get(0), BatteryFactorsStateEstimator.Temperature_Limit.get(1)),"Low","Temperature",temperature);
+		BatteryFactorAccumulator.printBreachWarningMsg(BatteryFactorValidator.CheckHBreach("Temperature", temperature, BatteryFactorsStateEstimator.Temperature_Limit.get(0), BatteryFactorsStateEstimator.Temperature_Limit.get(1)),"High","Temperature",temperature);
+		boolean isTempMax=BatteryFactorAccumulator.printAlertMsg(BatteryFactorValidator.EvaluateBatteryMaxMeasure("Temperature", temperature, BatteryFactorsStateEstimator.Temperature_Limit.get(1)),"High","Temperature",temperature);
+		boolean isTempMin=BatteryFactorAccumulator.printAlertMsg(BatteryFactorValidator.EvaluateBatteryMinMeasure("Temperature", temperature, BatteryFactorsStateEstimator.Temperature_Limit.get(0)),"Low","Temperature",temperature);
+		return (isTempMax && isTempMin);
 		
 	}
 	private float convert_F_to_C(float temperature) {
@@ -53,15 +58,19 @@ public class BatteryFactorsStateEstimator {
 	}
 
 	public boolean isSocWithinRange(float stateofcharge) {
-		DisplayMessages.printBreachWarningMsg(BatteryFactorValidator.CheckLBreach("StateofCharge", stateofcharge, MIN_SOC,MAX_SOC),"Low","StateofCharge");
-		DisplayMessages.printBreachWarningMsg(BatteryFactorValidator.CheckHBreach("StateofCharge", stateofcharge, MIN_SOC,MAX_SOC),"High","StateofCharge");
-		return (BatteryFactorValidator.EvaluateBatteryMaxMeasure("StateofCharge", stateofcharge, MAX_SOC)&&BatteryFactorValidator.EvaluateBatteryMinMeasure("StateofCharge", stateofcharge,MIN_SOC));
+		BatteryFactorAccumulator.printBreachWarningMsg(BatteryFactorValidator.CheckLBreach("StateofCharge", stateofcharge, BatteryFactorsStateEstimator.Soc_Limit.get(0),BatteryFactorsStateEstimator.Soc_Limit.get(1)),"Low","StateofCharge",stateofcharge);
+		BatteryFactorAccumulator.printBreachWarningMsg(BatteryFactorValidator.CheckHBreach("StateofCharge", stateofcharge, BatteryFactorsStateEstimator.Soc_Limit.get(0),BatteryFactorsStateEstimator.Soc_Limit.get(1)),"High","StateofCharge",stateofcharge);
+		boolean isSocMax=BatteryFactorAccumulator.printAlertMsg(BatteryFactorValidator.EvaluateBatteryMaxMeasure("StateofCharge", stateofcharge, BatteryFactorsStateEstimator.Soc_Limit.get(1)),"High","StateofCharge",stateofcharge);
+		boolean isSocMin=BatteryFactorAccumulator.printAlertMsg(BatteryFactorValidator.EvaluateBatteryMinMeasure("StateofCharge", stateofcharge, BatteryFactorsStateEstimator.Soc_Limit.get(0)),"Low","StateofCharge",stateofcharge);
+		return (isSocMax && isSocMin);
+		
 	}
 	
 	public boolean isChargeWithinRange(float chargeRate) {
-		DisplayMessages.printBreachWarningMsg(BatteryFactorValidator.CheckLBreach("ChargeRate", chargeRate,MIN_CHARGE_RATE,MAX_CHARGE_RATE),"Low","ChargeRate");
-		DisplayMessages.printBreachWarningMsg(BatteryFactorValidator.CheckLBreach("ChargeRate", chargeRate,MIN_CHARGE_RATE,MAX_CHARGE_RATE),"High","ChargeRate");
-		return (BatteryFactorValidator.EvaluateBatteryMaxMeasure("ChargeRate", chargeRate,MAX_CHARGE_RATE));
+		BatteryFactorAccumulator.printBreachWarningMsg(BatteryFactorValidator.CheckLBreach("ChargeRate", chargeRate,BatteryFactorsStateEstimator.ChargeRate_Limit.get(0),BatteryFactorsStateEstimator.ChargeRate_Limit.get(1)),"Low","ChargeRate",chargeRate);
+		BatteryFactorAccumulator.printBreachWarningMsg(BatteryFactorValidator.CheckLBreach("ChargeRate", chargeRate,BatteryFactorsStateEstimator.ChargeRate_Limit.get(0),BatteryFactorsStateEstimator.ChargeRate_Limit.get(1)),"High","ChargeRate",chargeRate);
+		boolean isChargeRateMax=BatteryFactorAccumulator.printAlertMsg(BatteryFactorValidator.EvaluateBatteryMaxMeasure("ChargeRate", chargeRate, BatteryFactorsStateEstimator.ChargeRate_Limit.get(1)),"High","ChargeRate",chargeRate);
+		return (isChargeRateMax);
 	}
 
 	public boolean setTemperatureunit(String temp_unit) {
