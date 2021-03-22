@@ -1,14 +1,12 @@
 package vitals;
 
-import java.util.Map;
-
 public class ReportGenerator {
 	
 	
 	public static  void getBatteryReport() {
 		StringBuilder sb=new StringBuilder();
-		boolean factorViolation=CheckAlertFactors()&&CheckBrechFactors();
-		sb=(BatteryFactorAccumulator.language=="EN")?GenerateReportEN(factorViolation,sb):GenerateReportDE(factorViolation,sb);
+		
+		sb=(BatteryFactorAccumulator.language=="EN")?generateReportEN(sb):generateReportDE(sb);
 		BatteryFactorAccumulator.VitalFactorExceedMaxLimit.clear();
 		BatteryFactorAccumulator.VitalFactorExceedMinLimit.clear();
 		BatteryFactorAccumulator.VitalFactorReachHighBreach.clear();
@@ -16,15 +14,15 @@ public class ReportGenerator {
 		System.out.println(sb.toString());		
 	}
 
-	private static StringBuilder GenerateReportDE(boolean factorViolation, StringBuilder sb) {
+	private static StringBuilder generateReportDE(StringBuilder sb) {
 		// TODO Auto-generated method stub
-		sb=(factorViolation)?printSuccessDE(sb):printFailureDE(sb);
+		sb=(BatteryFactorAccumulator.factorviolated)?printSuccessDE(sb):printFailureDE(sb);
 		return sb;
 	}
 
-	private static StringBuilder GenerateReportEN(boolean factorViolation, StringBuilder sb) {
+	private static StringBuilder generateReportEN(StringBuilder sb) {
 		// TODO Auto-generated method stub
-		sb=(factorViolation)?printSuccessEN(sb):printFailureEN(sb);
+		sb=(BatteryFactorAccumulator.factorviolated)?printSuccessEN(sb):printFailureEN(sb);
 		return sb;
 	}
 
@@ -32,12 +30,10 @@ public class ReportGenerator {
 		sb.append("Generating Over All  Battery Report \n");
 		sb.append("One Or more Vital Factors violating the limit...Please take necessary actions!\n");
 		sb.append("Vitals Factors limit-->Factor=[Min,Max]:"+BatteryFactorsStateEstimator.dataMap.toString()+"\n");
-		sb.append(getALertMaxParameters(BatteryFactorAccumulator.VitalFactorExceedMaxLimit));
-		sb.append(getAlertMinParameters(BatteryFactorAccumulator.VitalFactorExceedMinLimit));
-		sb.append("Vitals Factors exceeding High breach limit are:\n");
-		sb.append(getParamHighBreachWarning(BatteryFactorAccumulator.VitalFactorReachHighBreach));
-		sb.append("Vitals Factors exceeding Low breach limit are:\n");
-		sb.append(getParamLowBreachWarning(BatteryFactorAccumulator.VitalFactorReachLowBreach));
+		sb.append("\n Violates maximum limit-->"+BatteryFactorAccumulator.VitalFactorExceedMaxLimit.toString());
+		sb.append("\n Violates minimum limit-->"+BatteryFactorAccumulator.VitalFactorExceedMinLimit.toString());
+		sb.append("\n Vitals Factors exceeding High breach limit are--->"+BatteryFactorAccumulator.VitalFactorReachHighBreach.toString());
+		sb.append("\n Vitals Factors exceeding Low breach limit are--->"+BatteryFactorAccumulator.VitalFactorReachLowBreach.toString());
 		
 		return sb;
 	}
@@ -46,48 +42,14 @@ public class ReportGenerator {
 		sb.append("Generieren uber alle Batterieberichte \n");
 		sb.append("Ein oder mehrere wichtige Faktoren, die das Limit uberschreiten ... Bitte ergreifen Sie die erforderlichen MaBnahmen!\n");
 		sb.append("Vitale Faktoren limit-->Faktoren=[Min,Max]:"+BatteryFactorsStateEstimator.dataMap.toString()+"\n");
-		sb.append(getALertMaxParameters(BatteryFactorAccumulator.VitalFactorExceedMaxLimit));
-		sb.append(getAlertMinParameters(BatteryFactorAccumulator.VitalFactorExceedMinLimit));
-		sb.append("Vitale Faktoren, die die untere Grenze erreichen, sind:\n");
-		sb.append(getParamHighBreachWarning(BatteryFactorAccumulator.VitalFactorReachHighBreach));
-		sb.append("Vitale Faktoren, die die Obergrenze erreichen, sind:\n");
-		sb.append(getParamLowBreachWarning(BatteryFactorAccumulator.VitalFactorReachLowBreach));
-		
+		sb.append("\n verletzt maximal-->"+BatteryFactorAccumulator.VitalFactorExceedMaxLimit.toString());
+		sb.append("\n verletzt minimal-->"+BatteryFactorAccumulator.VitalFactorExceedMinLimit.toString());
+		sb.append("\n Vitale Faktoren, die die untere Grenze erreichen, sind --->"+BatteryFactorAccumulator.VitalFactorReachHighBreach.toString());
+		sb.append("\n Vitale Faktoren, die die Obergrenze erreichen, sind--->"+BatteryFactorAccumulator.VitalFactorReachLowBreach.toString());
 		return sb;
 	}
 
-	private static String getParamLowBreachWarning(Map<String, Float> vitalFactorReachLowBreach) {
-		if(!vitalFactorReachLowBreach.isEmpty()){
-			return vitalFactorReachLowBreach.toString()+"\n";
-		}
-		return "None \n";
-		}
-
-	private static String getParamHighBreachWarning(
-			Map<String, Float> vitalFactorReachHighBreach) {
-		if(!vitalFactorReachHighBreach.isEmpty()){
-			return vitalFactorReachHighBreach.toString()+"\n";
-		}
-		return "None \n";
-	}
-
-	private static String getAlertMinParameters(
-			Map<String, Float> vitalFactorExceedMinLimit) {
-		if(!vitalFactorExceedMinLimit.isEmpty()){
-			return vitalFactorExceedMinLimit.toString()+"\n";
-		}
-		return "Factors Listed crossing Min Limit->None \n";
-		
-	}
-
-	private static String getALertMaxParameters(
-			Map<String, Float> vitalFactorExceedMaxLimit) {
-		if(!vitalFactorExceedMaxLimit.isEmpty()){
-			return vitalFactorExceedMaxLimit.toString()+"\n";
-		}
-		return "Factors Listed crossing Max Limit->None \n";
-	}
-
+	
 	private static StringBuilder printSuccessEN(StringBuilder sb) {
 		sb.append("Generating Over All  Battery Report \n");
 		sb.append("All the vital parameters are within Range.Overall Battery Health is Good!\n");
@@ -99,11 +61,6 @@ public class ReportGenerator {
 		sb.append("Alle wichtigen Parameter liegen innerhalb des Bereichs. Insgesamt ist der Batteriezustand gut!\n");
 		return sb;
 	}
-	private static boolean CheckAlertFactors(){
-		return BatteryFactorAccumulator.VitalFactorExceedMaxLimit.isEmpty()&&BatteryFactorAccumulator.VitalFactorExceedMinLimit.isEmpty();
-	}
-	private static boolean CheckBrechFactors(){
-		return BatteryFactorAccumulator.VitalFactorReachHighBreach.isEmpty()&&BatteryFactorAccumulator.VitalFactorReachLowBreach.isEmpty();
-	}
+	
 	
 }
