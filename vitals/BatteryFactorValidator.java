@@ -1,24 +1,24 @@
 package vitals;
 public class BatteryFactorValidator {
   
-	public static boolean EvaluateBatteryMaxMeasure(String ParamName,float ParamValue,float MaxParamLimit) {
+	public static boolean evaluateBatteryMaxMeasure(String ParamName,float ParamValue,float MaxParamLimit) {
 		
         return ParamValue>MaxParamLimit;
 	}
 	
-	public static boolean EvaluateBatteryMinMeasure(String ParamName,float ParamValue,float MinParamLimit) {
+	public static boolean evaluateBatteryMinMeasure(String ParamName,float ParamValue,float MinParamLimit) {
 		return ParamValue < MinParamLimit;
 	}
 	
 	
-    public static boolean CheckLBreach(String ParamName,float ParamValue,float MinParamLimit,float MaxParamLimit)
+    public static boolean checkLowBreach(String ParamName,float ParamValue,float MinParamLimit,float MaxParamLimit)
     {
-    	return((ParamValue >(MinParamLimit+ (MinParamLimit* 0.05f)))&& (ParamValue<(MinParamLimit +MaxParamLimit*0.05f)));
+    	return((ParamValue >(MinParamLimit+ (MinParamLimit* 0.05f)))&& (ParamValue<(MinParamLimit +MaxParamLimit*0.05f))); //check against computed tolerance
     }    
     
-    public static boolean CheckHBreach(String ParamName,float ParamValue,float MinParamLimit,float MaxParamLimit)
+    public static boolean checkHighBreach(String ParamName,float ParamValue,float MinParamLimit,float MaxParamLimit)
     {
-         return((ParamValue > (MaxParamLimit- (MaxParamLimit*0.05f)))&& (ParamValue<MaxParamLimit));
+         return((ParamValue > (MaxParamLimit- (MaxParamLimit*0.05f)))&& (ParamValue<MaxParamLimit));//check against computed tolerance
          
         
     }
